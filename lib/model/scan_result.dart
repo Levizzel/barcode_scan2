@@ -3,12 +3,12 @@ import '../gen/protos/protos.pb.dart';
 /// Represents the result of a scan
 class ScanResult {
   /// Creates a new scan result
-  ScanResult({
-    this.type = ResultType.Barcode,
-    this.rawContent = '',
-    this.format = BarcodeFormat.unknown,
-    this.formatNote = '',
-  });
+  ScanResult(
+      {this.type = ResultType.Barcode,
+      this.rawContent = '',
+      this.format = BarcodeFormat.unknown,
+      this.formatNote = '',
+      this.isList = false});
 
   /// Represents the type of the result
   final ResultType type;
@@ -22,4 +22,6 @@ class ScanResult {
 
   /// If the format is unknown, this field holds additional information
   final String formatNote;
+
+  final bool isList;
 }

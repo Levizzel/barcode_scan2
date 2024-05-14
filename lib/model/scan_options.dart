@@ -3,6 +3,13 @@ import '../model/android_options.dart';
 
 /// Provides options to configure the barcode scanner
 class ScanOptions {
+  static Map<String, String> defaultListShowStrings = const {
+    'cancel': 'Cancel',
+    'flash_on': 'Flash on',
+    'flash_off': 'Flash off',
+    'showListSelection': 'true'
+  };
+
   /// Create a object which represents the scanner options
   const ScanOptions({
     this.restrictFormat = const [],
@@ -13,6 +20,7 @@ class ScanOptions {
       'cancel': 'Cancel',
       'flash_on': 'Flash on',
       'flash_off': 'Flash off',
+      'showListSelection': 'false'
     },
   }) : assert(useCamera >= -1);
 

@@ -83,6 +83,7 @@ class BarcodeScanner {
       formatNote: tmpResult.formatNote,
       rawContent: tmpResult.rawContent,
       type: tmpResult.type,
+      isList: tmpResult.isList,
     );
   }
 

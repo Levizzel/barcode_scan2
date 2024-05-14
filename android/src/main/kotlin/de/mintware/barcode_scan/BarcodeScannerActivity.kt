@@ -91,64 +91,67 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
             }
         }
         setContentView(scannerView)
-
-        val linearLayout = LinearLayout(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-            )
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-        }
-
-        // Create "Single" button
-        singleButton = Button(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                bottomMargin = dpToPx(34)
-                marginEnd = dpToPx(8)
-            }
-            text = "Single"
-            isSelected = true // Default selection
-            setBackgroundColor(resources.getColor(android.R.color.holo_orange_light)) // Set selected color
-            setOnClickListener {
-                singleButton.isSelected = true
-                listButton.isSelected = false
-                singleButton.setBackgroundColor(resources.getColor(android.R.color.holo_orange_light))
-                listButton.setBackgroundColor(resources.getColor(android.R.color.darker_gray))
-
-            }
-        }
-
-        // Create "List" button
-        listButton = Button(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                bottomMargin = dpToPx(34)
-            }
-            text = "List"
-            setBackgroundColor(resources.getColor(android.R.color.darker_gray)) // Set unselected color
-            setOnClickListener {
-                singleButton.isSelected = false
-                listButton.isSelected = true
-                singleButton.setBackgroundColor(resources.getColor(android.R.color.darker_gray))
-                listButton.setBackgroundColor(resources.getColor(android.R.color.holo_orange_light))
-                
-            }
-        }
-
-        linearLayout.addView(singleButton)
-        linearLayout.addView(listButton)
-
         
+        if(config.stringsMap["showListSelection"] == "true"){
 
-        (window.decorView as ViewGroup).addView(linearLayout)
+            val linearLayout = LinearLayout(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            }
+
+            // Create "Single" button
+            singleButton = Button(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                    bottomMargin = dpToPx(34)
+                    marginEnd = dpToPx(8)
+                }
+                text = "Single"
+                isSelected = true // Default selection
+                setBackgroundColor(resources.getColor(android.R.color.holo_orange_light)) // Set selected color
+                setOnClickListener {
+                    singleButton.isSelected = true
+                    listButton.isSelected = false
+                    singleButton.setBackgroundColor(resources.getColor(android.R.color.holo_orange_light))
+                    listButton.setBackgroundColor(resources.getColor(android.R.color.darker_gray))
+
+                }
+            }
+
+            // Create "List" button
+            listButton = Button(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                    bottomMargin = dpToPx(34)
+                }
+                text = "List"
+                setBackgroundColor(resources.getColor(android.R.color.darker_gray)) // Set unselected color
+                setOnClickListener {
+                    singleButton.isSelected = false
+                    listButton.isSelected = true
+                    singleButton.setBackgroundColor(resources.getColor(android.R.color.darker_gray))
+                    listButton.setBackgroundColor(resources.getColor(android.R.color.holo_orange_light))
+                    
+                }
+            }
+
+            linearLayout.addView(singleButton)
+            linearLayout.addView(listButton)
+
+            
+
+            (window.decorView as ViewGroup).addView(linearLayout)
+        }
     }
 private fun dpToPx(dp: Int): Int {
     val density = resources.displayMetrics.density
@@ -232,11 +235,11 @@ private fun dpToPx(dp: Int): Int {
                 it.formatNote = formatNote
                 it.rawContent = result.text
                 it.type = Protos.ResultType.Barcode
+                it.isList = listButton.isSelected
             }
         }
         val res = builder.build()
         intent.putExtra(EXTRA_RESULT, res.toByteArray())
-        intent.putExtra("IS_MULTIPLE_ITEMS", listButton.isSelected)
         setResult(RESULT_OK, intent)
         finish()
     }
