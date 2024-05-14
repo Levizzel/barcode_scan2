@@ -61,5 +61,8 @@ message ScanResult {
     BarcodeFormat format = 3;
     // If the format is unknown, this field holds additional information
     string formatNote = 4;
+    
+    // New field to indicate that the list button was pressed
+    bool isList = 5;
 }
 
